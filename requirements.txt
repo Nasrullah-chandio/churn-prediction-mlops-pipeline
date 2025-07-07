@@ -16,8 +16,6 @@ streamlit
 lightgbm
 streamlit
 streamlit-option-menu
-dvc[ssh]
-dvc[gdrive]
 
 
 
