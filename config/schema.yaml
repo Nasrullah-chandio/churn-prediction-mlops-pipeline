@@ -1,0 +1,40 @@
+bss_data:
+  columns:
+    customerID: object
+    gender: object
+    SeniorCitizen: int64
+    Partner: object
+    Dependents: object
+    tenure: int64
+    PhoneService: object
+    MultipleLines: object
+    InternetService: object
+    OnlineSecurity: object
+    OnlineBackup: object
+    DeviceProtection: object
+    TechSupport: object
+    StreamingTV: object
+    StreamingMovies: object
+    Contract: object
+    PaperlessBilling: object
+    PaymentMethod: object
+    MonthlyCharges: float64
+    TotalCharges: float64
+    Churn: object
+
+network_data:
+  columns:
+    date: object
+    customerID: object
+    total_calls: float64
+    dropped_calls: float64
+    data_volume_MB: float64
+    throughput_Mbps: float64
+
+complaints_data:
+  columns:
+    complaint_id: object
+    customerID: object
+    date: object
+    issue: object
+    status: object
