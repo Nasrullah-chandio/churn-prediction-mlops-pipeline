@@ -11,19 +11,24 @@ include/
 __pycache__/
 .pytest_cache/
 
-# VS Code specific files
+# IDE and Editor Settings
 .vscode/
-
-# PyCharm specific files
 .idea/
 
-# Jupyter Notebook checkpoints
+# Jupyter
 .ipynb_checkpoints/
 
-# Artifacts
+# Artifacts and Logs
 artifacts/*
-
-# DVC
+mlruns/*
 .dvc/cache/
 .dvcignore
-mlruns/*
+
+# Optional: if not tracking DVC lock
+# dvc.lock
+
+# Streamlit
+.streamlit/
+
+# Environment Secrets
+.env
