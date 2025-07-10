@@ -1,0 +1,156 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python -m mlflow_project.pipeline.stage_01_data_ingestion
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: f14ceb41fce2a379feab1570c876418d
+      size: 1988
+    - path: src/mlflow_project/components/data_ingestion.py
+      hash: md5
+      md5: 5926676bacb909983b690542b4b59976
+      size: 1042
+    - path: src/mlflow_project/pipeline/stage_01_data_ingestion.py
+      hash: md5
+      md5: 58738b9a242213b9782297f923308585
+      size: 770
+    outs:
+    - path: artifacts/data_ingestion/ingested_data
+      hash: md5
+      md5: 7a50b6268420a99cd62cc02728272812.dir
+      size: 10327298
+      nfiles: 3
+  data_validation:
+    cmd: python -m mlflow_project.pipeline.stage_02_data_validation
+    deps:
+    - path: artifacts/data_ingestion/ingested_data/bss_data.csv
+      hash: md5
+      md5: 7f07de26b054de4c36eed95a1277fe21
+      size: 978285
+    - path: config/config.yaml
+      hash: md5
+      md5: f14ceb41fce2a379feab1570c876418d
+      size: 1988
+    - path: config/schema.yaml
+      hash: md5
+      md5: 764f79caeefb7bfbd8cfa3e43b940366
+      size: 879
+    - path: src/mlflow_project/components/data_validation.py
+      hash: md5
+      md5: c0ff7393bc7c7865fb6bb13af7455a4a
+      size: 950
+    - path: src/mlflow_project/pipeline/stage_02_data_validation.py
+      hash: md5
+      md5: 604f5a64acfca6926dea6927a9d406e5
+      size: 702
+    outs:
+    - path: artifacts/data_validation/status.txt
+      hash: md5
+      md5: f827cf462f62848df37c5e1e94a4da74
+      size: 4
+  data_preprocessing:
+    cmd: python -m mlflow_project.pipeline.stage_03_data_preprocessing
+    deps:
+    - path: artifacts/data_ingestion/ingested_data
+      hash: md5
+      md5: 7a50b6268420a99cd62cc02728272812.dir
+      size: 10327298
+      nfiles: 3
+    - path: config/config.yaml
+      hash: md5
+      md5: f14ceb41fce2a379feab1570c876418d
+      size: 1988
+    - path: src/mlflow_project/components/data_preprocessing.py
+      hash: md5
+      md5: b6fb54a831be16aa2b75c0aa2c39b988
+      size: 1995
+    - path: src/mlflow_project/pipeline/stage_03_data_preprocessing.py
+      hash: md5
+      md5: f869040e3f3f39a745d56901526b2470
+      size: 732
+    outs:
+    - path: artifacts/data_preprocessing/preprocessed_data.csv
+      hash: md5
+      md5: b096dde0721a7bf99c1884c15c5a5805
+      size: 1427715
+  data_feature_engineering:
+    cmd: python -m mlflow_project.pipeline.stage_04_feature_engineering
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: f14ceb41fce2a379feab1570c876418d
+      size: 1988
+    - path: src/mlflow_project/components/feature_engineering.py
+      hash: md5
+      md5: d21b6e60c1ce0ad85df8d692aac390f8
+      size: 1707
+    - path: src/mlflow_project/pipeline/stage_04_feature_engineering.py
+      hash: md5
+      md5: ae3870adde69585a46e18a047fb4c047
+      size: 668
+    outs:
+    - path: artifacts/feature_engineering/feature_engineered_data.csv
+      hash: md5
+      md5: dc7bc094fb2ddd2bb261f6de55d4144d
+      size: 1423511
+  model_trainer:
+    cmd: python -m mlflow_project.pipeline.stage_05_model_trainer
+    deps:
+    - path: artifacts/feature_engineering/feature_engineered_data.csv
+      hash: md5
+      md5: dc7bc094fb2ddd2bb261f6de55d4144d
+      size: 1423511
+    - path: config/config.yaml
+      hash: md5
+      md5: f14ceb41fce2a379feab1570c876418d
+      size: 1988
+    - path: src/mlflow_project/components/model_trainer.py
+      hash: md5
+      md5: a84f5d910074628c8373a14afb91faba
+      size: 1511
+    - path: src/mlflow_project/pipeline/stage_05_model_trainer.py
+      hash: md5
+      md5: 4fdf2fa12b409a596d17620aa83b5570
+      size: 779
+    outs:
+    - path: artifacts/model_trainer/model.joblib
+      hash: md5
+      md5: d3471d9f53affba7e942e27bf499e7d4
+      size: 350068
+    - path: artifacts/model_trainer/scaler.joblib
+      hash: md5
+      md5: 0f0dec0d7d8a70e1a6a25ea0026adf79
+      size: 3079
+  model_evaluation:
+    cmd: python -m mlflow_project.pipeline.stage_06_model_evaluation
+    deps:
+    - path: artifacts/feature_engineering/feature_engineered_data.csv
+      hash: md5
+      md5: dc7bc094fb2ddd2bb261f6de55d4144d
+      size: 1423511
+    - path: artifacts/model_trainer/model.joblib
+      hash: md5
+      md5: d3471d9f53affba7e942e27bf499e7d4
+      size: 350068
+    - path: artifacts/model_trainer/scaler.joblib
+      hash: md5
+      md5: 0f0dec0d7d8a70e1a6a25ea0026adf79
+      size: 3079
+    - path: config/config.yaml
+      hash: md5
+      md5: f14ceb41fce2a379feab1570c876418d
+      size: 1988
+    - path: src/mlflow_project/components/model_evaluation.py
+      hash: md5
+      md5: 3b0b6de97fc87f2754224ace500f21be
+      size: 1915
+    - path: src/mlflow_project/pipeline/stage_06_model_evaluation.py
+      hash: md5
+      md5: 955e350c4ca14722ee0401be51287e6f
+      size: 925
+    outs:
+    - path: artifacts/model_evaluation/metrics.json
+      hash: md5
+      md5: d61180beb3680d6ada1b7e5e219bdf5e
+      size: 144
