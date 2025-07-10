@@ -39,15 +39,24 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict
 
-@dataclass(frozen=True)
+from dataclasses import dataclass
+
+
+@dataclass
 class ModelTrainerConfig:
-    data_path: Path
-    model_path: Path
-    scaler_path: Path
-    columns_path: Path
+    root_dir: str
+    model_name: str
     target_column: str
-    test_size: float
+    data_path: str
+    n_estimators: int
+    learning_rate: float
+    num_leaves: int
+    max_depth: int
     random_state: int
+    model_path: str
+    scaler_path: str
+    columns_path: str
+
 
 @dataclass
 class ModelEvaluationConfig:

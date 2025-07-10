@@ -29,15 +29,15 @@ feature_engineering:
   preprocessed_data_path: artifacts/data_preprocessing/preprocessed_data.csv
 
 
+artifacts_root: artifacts
+
 model_trainer:
   root_dir: artifacts/model_trainer
-  data_path: artifacts/feature_engineering/feature_engineered_data.csv
+  model_name: model.joblib
   model_path: artifacts/model_trainer/model.joblib
   scaler_path: artifacts/model_trainer/scaler.joblib
   columns_path: artifacts/model_trainer/columns.json
-  target_column: Churn_Label
-  test_size: 0.2
-  random_state: 42
+
 
 
 

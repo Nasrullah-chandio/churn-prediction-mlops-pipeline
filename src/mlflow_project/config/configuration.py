@@ -8,12 +8,26 @@ from mlflow_project.entity.config_entity import ModelTrainerConfig
 from mlflow_project.entity.config_entity import ModelEvaluationConfig
 from mlflow_project.entity.config_entity import ModelEvaluationConfig
 
+import os
+from mlflow_project.constants import *
+from mlflow_project.utils.common import read_yaml, create_directories
+from mlflow_project.entity.config_entity import ModelTrainerConfig
 from pathlib import Path
+from box.exceptions import BoxKeyError
+
+
+
+
 
 class ConfigurationManager:
-    def __init__(self, config_filepath=CONFIG_FILE_PATH):
-        self.config = read_yaml(config_filepath)
+    def __init__(self, config_filepath=CONFIG_FILE_PATH, params_filepath=PARAMS_FILE_PATH):
+        self.config = read_yaml(Path(config_filepath))
+        self.params = read_yaml(Path(params_filepath))
+
         create_directories([Path(self.config.artifacts_root)])
+
+    
+
 
     def get_data_ingestion_config(self) -> DataIngestionConfig:
         config = self.config.data_ingestion
@@ -66,18 +80,30 @@ class ConfigurationManager:
             preprocessed_data_path=config.preprocessed_data_path
         )
 
+    
     def get_model_trainer_config(self) -> ModelTrainerConfig:
-        config = self.config.model_trainer
+        try:
+            config = self.params.model_trainer
+        except BoxKeyError as e:
+            raise ValueError(f"Missing key in params.yaml: {e}")
+
         create_directories([Path(config.root_dir)])
+
         return ModelTrainerConfig(
-            data_path=Path(config.data_path),
-            model_path=Path(config.model_path),
-            scaler_path=Path(config.scaler_path),
-            columns_path=Path(config.columns_path),       
-            test_size=config.test_size,
+            root_dir=config.root_dir,
+            model_name=config.model_name,
+            target_column=config.target_column,
+            data_path=os.path.join(self.config.artifacts_root, "feature_engineering", "feature_engineered_data.csv"),
+            n_estimators=config.n_estimators,
+            learning_rate=config.learning_rate,
+            num_leaves=config.num_leaves,
+            max_depth=config.max_depth,
             random_state=config.random_state,
-            target_column=config.target_column   
+            model_path=os.path.join(config.root_dir, "model.joblib"),
+            scaler_path=os.path.join(config.root_dir, "scaler.joblib"),
+            columns_path=os.path.join(config.root_dir, "columns.json")
         )
+
 
 
     def get_model_evaluation_config(self) -> ModelEvaluationConfig:

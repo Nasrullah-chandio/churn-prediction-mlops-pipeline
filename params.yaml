@@ -1,0 +1,11 @@
+
+
+model_trainer:
+  root_dir: artifacts/model_trainer
+  model_name: model.joblib
+  target_column: Churn_Label
+  n_estimators: 100
+  learning_rate: 0.1
+  num_leaves: 31
+  max_depth: -1
+  random_state: 42
